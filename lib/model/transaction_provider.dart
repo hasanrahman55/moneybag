@@ -1,42 +1,57 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:moneybag/model/boxex.dart';
 import 'package:moneybag/model/transaction.dart';
 
 class TransactionProvider extends ChangeNotifier {
-  Transaction? transaction;
-
   List<Transaction> _data = [];
   List<Transaction> get data => _data;
+
+  List<Transaction> getTransaction() {
+    final box = Boxes.getTransaction();
+
+    return _data = box.values.toList().cast<Transaction>();
+  }
+
   void addTransaction(String title, bool isExpense, double amount) {
-    _data.add(
-      Transaction(
-          name: title,
-          createdAt: DateTime.now(),
-          isExpense: isExpense,
-          amount: amount),
-    );
+    final transaction = Transaction(
+        name: title,
+        createdAt: DateTime.now(),
+        isExpense: isExpense,
+        amount: amount);
+
+    final box = Boxes.getTransaction();
+    box.add(transaction);
+    _data = box.values.toList().cast<Transaction>();
+    getTransaction();
+
     notifyListeners();
   }
 
-  void removeTransaction(Transaction transaction) {
-    _data.remove(transaction);
+  void deleteTransaction(int index) async {
+    final box = Boxes.getTransaction();
+    await box.deleteAt(index);
+    getTransaction();
+
     notifyListeners();
   }
 
-  void editTransaction(Transaction transaction) {
-    notifyListeners();
-  }
+  void editTransaction(String title, bool isExpense, double amount) {
+    final transaction = Transaction(
+        name: title,
+        createdAt: DateTime.now(),
+        isExpense: isExpense,
+        amount: amount);
 
-  void deleteTransaction() {}
-  totalIn() {
-    double income = 0.0;
-    double expanse = 0.0;
-    return _data.fold<double>(
-        0,
-        (previousValue, transaction) => transaction.isExpense
-            ? expanse + transaction.amount
-            : income + transaction.amount);
+    final box = Boxes.getTransaction();
+    //box.put( transaction)
+    box.add(transaction);
+    _data = box.values.toList().cast<Transaction>();
+    getTransaction();
+
+    notifyListeners();
   }
 
   finalAmount() {
