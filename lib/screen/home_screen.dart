@@ -39,7 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(26),
                     decoration: const BoxDecoration(
                       // color: const Color(0xffE94C89).withOpacity(0.5),
-                      color: Colors.black,
+                      image: DecorationImage(
+                        image: AssetImage("images/cover.png"),
+                        fit: BoxFit.cover,
+                      ),
+                      //   color: Colors.black,
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
@@ -121,15 +125,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Expanded(
                                   child: TextButton.icon(
-                                    label: const Text('Edit'),
-                                    icon: const Icon(Icons.edit),
+                                    label: const Text(
+                                      'Edit',
+                                      style: TextStyle(color: Colors.purple),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.purple,
+                                    ),
                                     onPressed: () {},
                                   ),
                                 ),
                                 Expanded(
                                   child: TextButton.icon(
-                                    label: const Text('Delete'),
-                                    icon: const Icon(Icons.delete),
+                                    label: const Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
                                     onPressed: () {
                                       transaction.removeTransaction(expanse);
                                     },
