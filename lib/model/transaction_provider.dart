@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:moneybag/model/boxex.dart';
 import 'package:moneybag/model/transaction.dart';
 
@@ -13,20 +10,26 @@ class TransactionProvider extends ChangeNotifier {
     final box = Boxes.getTransaction();
 
     return _data = box.values.toList().cast<Transaction>();
+    notifyListeners();
   }
 
-  void addTransaction(String title, bool isExpense, double amount) {
-    final transaction = Transaction(
-        name: title,
-        createdAt: DateTime.now(),
-        isExpense: isExpense,
-        amount: amount);
-
+  void addTransaction(Transaction transaction) {
     final box = Boxes.getTransaction();
     box.add(transaction);
     _data = box.values.toList().cast<Transaction>();
     getTransaction();
+    notifyListeners();
+  }
 
+  void add(String name, double amount, bool isExpense) {
+    final box = Boxes.getTransaction();
+    box.add(Transaction(
+        name: name,
+        createdAt: DateTime.now(),
+        isExpense: isExpense,
+        amount: amount));
+    _data = box.values.toList().cast<Transaction>();
+    getTransaction();
     notifyListeners();
   }
 
@@ -38,20 +41,10 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editTransaction(String title, bool isExpense, double amount) {
-    final transaction = Transaction(
-        name: title,
-        createdAt: DateTime.now(),
-        isExpense: isExpense,
-        amount: amount);
-
+  Future<void> deleteAll() async {
     final box = Boxes.getTransaction();
-    //box.put( transaction)
-    box.add(transaction);
-    _data = box.values.toList().cast<Transaction>();
+    await box.clear();
     getTransaction();
-
-    notifyListeners();
   }
 
   finalAmount() {

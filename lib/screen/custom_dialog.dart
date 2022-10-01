@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-
-import 'package:moneybag/model/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'package:moneybag/model/transaction.dart';
+import 'package:moneybag/model/transaction_provider.dart';
+
 class CustomDialog extends StatefulWidget {
+  final bool isEditing;
+  final int? index;
   const CustomDialog({
     Key? key,
+    required this.isEditing,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -69,9 +74,13 @@ class _CustomDialogState extends State<CustomDialog> {
                     final isValid = fromKey.currentState!.validate();
                     if (isValid) {
                       context.read<TransactionProvider>().addTransaction(
-                          nameController.text,
-                          isExpense,
-                          double.parse(amountController.text));
+                            Transaction(
+                              name: nameController.text,
+                              createdAt: DateTime.now(),
+                              isExpense: isExpense,
+                              amount: double.parse(amountController.text),
+                            ),
+                          );
                       Navigator.of(context).pop();
                     }
                   },

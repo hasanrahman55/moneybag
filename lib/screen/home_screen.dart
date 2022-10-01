@@ -10,8 +10,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = context.watch<TransactionProvider>().data;
-
     return Scaffold(
       body: Consumer<TransactionProvider>(
         builder: (context, value, child) {
@@ -64,11 +62,29 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     //     const Divider(thickness: 2, color: Colors.black),
 
-                    const Text(
-                      ' Expanses',
-                      textAlign: TextAlign.left,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          ' Expanses',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        OutlinedButton(
+                          onPressed: () {
+                            value.deleteAll();
+                          },
+                          child: const Text(
+                            ' All Clear',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 18),
                     const Divider(thickness: 2),
@@ -77,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: data.length,
+                      itemCount: value.data.length,
                       itemBuilder: (context, index) {
                         final transactions = value.getTransaction()[index];
 
@@ -112,38 +128,19 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                             children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextButton.icon(
-                                      label: const Text(
-                                        'Edit',
-                                        style: TextStyle(color: Colors.purple),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.edit,
-                                        color: Colors.purple,
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: TextButton.icon(
-                                      label: const Text(
-                                        'Delete',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        value.deleteTransaction(index);
-                                        print("ha");
-                                      },
-                                    ),
-                                  )
-                                ],
+                              TextButton.icon(
+                                label: const Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  value.deleteTransaction(index);
+                                  print("ha");
+                                },
                               ),
                             ],
                           ),
@@ -159,7 +156,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => CustomDialog(),
+            builder: (context) => CustomDialog(isEditing: false),
           );
         },
         child: const Icon(Icons.add),
