@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:moneybag/model/transaction.dart';
 import 'package:moneybag/model/transaction_provider.dart';
 
 import 'package:moneybag/screen/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    Hive.box<Transaction>("transaction");
+    Future.delayed(Duration(milliseconds: 10)).then((value) {
+      Provider.of<TransactionProvider>(context, listen: false).getTransaction();
+      //   Provider.of<TransactionProvider>(context, listen: false).deleteAll();
+    });
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
