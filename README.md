@@ -1,16 +1,18 @@
 # moneybag
 
-A new Flutter project.
+MoneyBag is a Expanses tracker app where user can add there Income and expanse.
 
-## Getting Started
+dependencies uses:
 
-This project is a starting point for a Flutter application.
+For local storage I use..
+- hive
 
-A few resources to get you started if this is your first Flutter project:
+For State management.. 
+- Provider
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+This is the app UI. 
+
+![](UI/moneybag.png)
