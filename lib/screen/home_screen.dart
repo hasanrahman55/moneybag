@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : ListView(
                   padding: const EdgeInsets.all(18.0),
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 60),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(26),
